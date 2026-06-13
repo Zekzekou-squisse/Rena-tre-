@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Renaître</title>
+<title>Re-n'être</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0a0a0a;color:#f4f4f2;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
+body{background:#FAF8F5;color:#1C1C1A;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
 ::-webkit-scrollbar{width:0}
 textarea,input{outline:none;font-family:inherit}
 </style>
@@ -141,17 +141,18 @@ const css = `
   @keyframes tdot{0%,60%,100%{opacity:.2;transform:scale(1)}30%{opacity:1;transform:scale(1.35)}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-  .grain{position:absolute;inset:0;opacity:0.04;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  .ring{width:96px;height:96px;border-radius:50%;border:1px solid rgba(244,244,242,0.25);display:flex;align-items:center;justify-content:center;margin-bottom:38px;position:relative;animation:pulse 5s ease-in-out infinite}
-  .ring::before{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(244,244,242,0.08)}
-  .splash{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 26px;text-align:center;position:relative;overflow:hidden}
-  .splash-h{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(32px,7.5vw,52px);line-height:1.1;margin-bottom:20px;position:relative;z-index:1;letter-spacing:-0.5px}
+  .grain{position:absolute;inset:0;opacity:0.025;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .ring{width:96px;height:96px;border-radius:50%;border:1px solid rgba(28,28,26,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:38px;position:relative;animation:pulse 5s ease-in-out infinite}
+  .ring::before{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(28,28,26,0.06)}
+  .splash{min-height:100vh;background:#FAF8F5;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 26px;text-align:center;position:relative;overflow:hidden}
+  .splash-h{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(38px,9vw,58px);line-height:1.05;margin-bottom:28px;position:relative;z-index:1;letter-spacing:-1px;color:#1C1C1A}
   .splash-h em{font-style:italic;font-weight:400}
-  .splash-sub{font-size:15px;color:rgba(244,244,242,0.5);line-height:1.85;max-width:340px;margin-bottom:38px;font-weight:300;position:relative;z-index:1}
-  .start-btn{background:#f4f4f2;color:#0a0a0a;border:none;border-radius:2px;padding:17px 48px;font-size:14px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;position:relative;z-index:1}
+  .splash-cite{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:16px;color:#4A4844;line-height:1.8;max-width:360px;margin-bottom:8px;position:relative;z-index:1}
+  .splash-auteur{font-size:12px;color:#8A8680;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:32px;position:relative;z-index:1}
+  .splash-sub{font-size:14px;color:#5A5650;line-height:1.85;max-width:320px;margin-bottom:44px;font-weight:300;position:relative;z-index:1}
+  .start-btn{background:#1C1C1A;color:#FAF8F5;border:none;border-radius:40px;padding:17px 52px;font-size:14px;font-weight:500;letter-spacing:0.3px;cursor:pointer;transition:all 0.3s;position:relative;z-index:1}
   .start-btn:active{transform:scale(0.98)}
-  .splash-cite{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:14px;color:rgba(244,244,242,0.35);margin-top:46px;max-width:320px;line-height:1.7;position:relative;z-index:1}
-  .splash-note{font-size:11px;color:rgba(244,244,242,0.28);margin-top:16px;letter-spacing:1px;text-transform:uppercase;position:relative;z-index:1}
+  .splash-note{font-size:11px;color:#A0A09A;margin-top:16px;letter-spacing:1px;text-transform:uppercase;position:relative;z-index:1}
   .chat-wrap{display:flex;flex-direction:column;height:100vh;background:#0a0a0a;max-width:580px;margin:0 auto}
   .top{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid rgba(244,244,242,0.08);background:rgba(10,10,10,0.92);backdrop-filter:blur(14px)}
   .top-left{display:flex;align-items:center;gap:9px}
@@ -243,22 +244,23 @@ function App() {
   }
 
   if (!started) return (
-    <div style={{background:"#0a0a0a",minHeight:"100vh"}}>
+    
       <style>{css}</style>
       <div className="splash">
         <div className="grain"/>
-        <div className="ring"><div style={{width:10,height:10,borderRadius:"50%",background:"#f4f4f2"}}/></div>
-        <h1 className="splash-h">Et si tu n'étais plus<br/><em>spectateur·rice</em><br/>de ta propre vie ?</h1>
-        <p className="splash-sub">Une conversation vraie, pour voir clair dans ce qui te bloque — et retrouver l'élan d'avancer. À ton rythme. Sans jugement.</p>
-        <button className="start-btn" onClick={start}>Commencer</button>
+        <div className="ring"><div style={{width:10,height:10,borderRadius:"50%",background:"#1C1C1A"}}/></div>
+        <h1 className="splash-h">Re-n'<em>être</em></h1>
         <p className="splash-cite">« Aucun enseignement théorique sur l'eau de source n'a désaltéré un assoiffé. »</p>
+        <p className="splash-auteur">— Luis Ansa</p>
+        <p className="splash-sub">Une présence humaine, augmentée par l'intelligence artificielle. Pour que la vraie rencontre commence là où l'écran s'arrête.</p>
+        <button className="start-btn" onClick={start}>Commencer</button>
         <p className="splash-note">Gratuit · Confidentiel · Sans inscription</p>
       </div>
     </div>
   );
 
   return (
-    <div style={{background:"#0a0a0a",minHeight:"100vh"}}>
+    
       <style>{css}</style>
       <div className="chat-wrap">
         <div className="top">
