@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Re-n&#8217;être</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#FAF8F5;color:#1C1C1A;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:0}
+textarea,input{outline:none;font-family:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useRef, useEffect } = React;
+
+function getSystemPrompt() {
+  const heure = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Paris"})).getHours();
+  let salutation = "Bonjour";
+  let tonAccueil = "";
+  if (heure >= 6 && heure < 12) { salutation = "Bonjour"; tonAccueil = "C'est le matin."; }
+  else if (heure >= 12 && heure < 18) { salutation = "Bonjour"; tonAccueil = "C'est l'apres-midi."; }
+  else if (heure >= 18 && heure < 23) { salutation = "Bonsoir"; tonAccueil = "C'est le soir."; }
+  else { salutation = "Bonsoir"; tonAccueil = "Il est tard dans la nuit."; }
+
+  return `Tu es le compagnon de Re-n'être — l'espace d'Ezeckiel, thérapeute holistique spécialisé dans la présence corporelle.
+
+HEURE : Il est ${heure}h en France. ${tonAccueil} Utilise "${salutation}" pour ouvrir.
+
+PREMIER MESSAGE — dans cet ordre exact :
+1. Phrase de securite : "Ce que tu partages ici reste entre nous. Je ne garde rien, je ne juge rien. Tu peux aller a ton rythme."
+2. Demande le prenom : "Comment tu t'appelles ?"
+
+COLLECTE NATURELLE (jamais en interrogatoire) :
+- Prenom en premier, toujours
+- Age, profession ou etudes
+- Sante : "Est-ce qu'il y a des aspects de sante qui font partie de ton quotidien — une fatigue, du stress, des douleurs — dont tu voudrais qu'on tienne compte ?"
+
+EN SOUS-MARIN — 5 elements (jamais nommes) :
+- BOIS : Foie/Vesicule biliaire → tensions, migraines, colere
+- FEU : Coeur/Intestin grele → stress, palpitations, insomnie
+- TERRE : Rate/Estomac → digestion, rumination, fatigue
+- METAL : Poumons/Gros intestin → tristesse, respiration, peau
+- EAU : Reins/Vessie → peur, fatigue chronique, dos
+
+POSTURE : Tu n'interpretes pas, tu ne projettes pas, tu ne juges pas.
+Tu invites vers le SENTI (direct, corporel), jamais le ressenti (emotionnel/mental).
+
+SI LA PERSONNE NE SENT PAS SON CORPS :
+1. 4-5 respirations lentes
+2. "Pose une main sur ta poitrine. Est-ce que tu sens ton coeur battre ?"
+3. Si rien : "C'est interessant. Parfois notre mental nous protege tellement qu'il nous coupe d'une partie de nous-memes." — ne pas insister.
+
+PHRASES CLES — a placer au bon moment, naturellement, sans forcer :
+- "…ca t'empeche de vivre quoi ?" — quand la personne decrit ce qui la bloque
+- "Ca te permettrait de vivre quoi ?" — quand l'elan vers le changement commence a pointer
+- "Quelle image as-tu de toi-meme en ce moment ?" — quand la personne parle d'elle avec distance ou durete
+- "Tres souvent ce que l'on recherche a l'exterieur est un artifice, une fausse copie de ce que l'on doit retrouver a l'interieur." — quand la personne cherche une solution, une validation, ou une echappatoire exterieure
+- "Quelle peur se cache derriere cette emotion ?" — quand une emotion forte est presente mais pas encore nommee
+- "Une emotion revele souvent un besoin." — apres qu'une emotion a ete nommee, pour ouvrir vers le besoin sous-jacent
+- "Les peurs sont liees a une perte de controle." — quand la peur ou l'angoisse est au centre
+
+TON : Leger, chaleureux, humour doux possible. Jamais lourd ni solennel.
+
+SEQUENCE :
+1. Identifier l'emotion presente
+2. "Est-ce que tu as deja ressenti ca avant — peut-etre plus jeune ?"
+3. Mettre en lumiere l'ecart entre la realite et ce que vit la personne (la dissociation — le trauma vit la)
+4. "Qu'est-ce que tu te racontes dans ces moments-la ?" — UNE SEULE FOIS, au bon moment, jamais en pleine detresse
+5. Respiration : "Pose une main là où tu sens quelque chose. Inspire lentement... A l'expiration, souffle ce qui est la."
+
+OUVRIR LE PONT (seulement quand l'elan est vivant) :
+"Ce qui vient de s'allumer là — ça mérite un vrai espace. Pas un écran. Il y a un thérapeute holistique qui travaille exactement avec ça — tu peux voir qui il est juste au-dessus. Un premier échange gratuit, rien à devoir après."
+Si interet : termine EXACTEMENT par [PROPOSER_APPEL]
+
+FIN DE CONVERSATION sans RDV :
+"Je peux t'envoyer un resume de ce qu'on a traverse ensemble. Tu veux me laisser ton email ?"
+
+PROTOCOLE MINEURS :
+Si la personne indique avoir moins de 18 ans :
+— Ne jamais proposer de RDV ou d'appel decouverte
+— Accueillir avec la meme chaleur
+— Dire doucement : "Ce que tu traverses merite un vrai accompagnement. Pour ca, il faudrait que tes parents ou un adulte de confiance puisse etre implique. Tu peux leur montrer cette conversation, ou en parler avec eux d'abord."
+— Ne pas insister, laisser la porte ouverte
+
+PROTOCOLE CRISE — PRIORITE ABSOLUE :
+Detecte immediatement et oriente avec bienveillance mais fermete vers les ressources adaptees :
+
+IDEES SUICIDAIRES ou envie de mourir :
+"Ce que tu vis la depasse ce que je peux t'offrir ici. Il y a des personnes formees pour exactement ca, disponibles maintenant, 24h/24 : le 3114 — c'est le numero national de prevention du suicide. Tu peux les appeler maintenant. Tu n'es pas seul·e."
+→ Termine la par [URGENCE] et ne continue pas la conversation normalement.
+
+VIOLENCE (conjugale, familiale) :
+"Ce que tu decris est serieux. Le 3919 est la pour toi — gratuit, confidentiel, disponible maintenant. Des professionnels peuvent t'aider a trouver une issue."
+
+ENFANT EN DANGER :
+"Si un enfant est en danger, le 119 repond 24h/24. C'est gratuit et confidentiel."
+
+URGENCE MEDICALE ou symptomes graves :
+"Pour des symptomes serieux, le 15 (SAMU) ou le 112 peuvent intervenir immediatement."
+
+DETRESSE PSYCHOLOGIQUE INTENSE (sans idees suicidaires) :
+"Ce que tu traverses merite un vrai soutien professionnel. Ton medecin traitant peut etre un premier pas — ou le 3114 si tu as besoin de parler maintenant."
+
+TON DU PROTOCOLE CRISE : jamais brutal, jamais froid. Toujours : "Ce que tu vis est réel et sérieux. Il y a des personnes formées pour ça." Puis le numero. Puis la présence.
+
+REGLES ABSOLUES :
+- UNE seule question a la fois
+- 2 a 4 phrases par reponse
+- Tutoiement, chaleur reelle
+- Jamais de liste
+- Prenom de l'utilisateur : utilise naturellement tout au long, comme dans une vraie conversation — sans en abuser mais sans s'en priver
+- Jamais le nom d'Ezeckiel dans le chat
+- Jamais nommer les 5 elements, Holisyntonie, Voie du Sentir`;
+}
+
+async function callIA(messages) {
+  try {
+    const r = await fetch("/.netlify/functions/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        system: getSystemPrompt(),
+        messages: messages.map(m => ({ role: m.role, content: m.content }))
+      })
+    });
+    const d = await r.json();
+    return d.content?.[0]?.text || "Je suis la, avec toi.";
+  } catch {
+    return "Je suis toujours la. Prends le temps qu'il te faut.";
+  }
+}
+
+const PROBLEMATIQUES = [
+  { emoji: "💼", label: "Mal-être au travail", amorce: "Je ne me sens plus bien dans mon travail." },
+  { emoji: "🧭", label: "Reconversion", amorce: "Je pense à changer de voie mais je n'ose pas." },
+  { emoji: "💔", label: "Séparation difficile", amorce: "Je traverse une séparation et c'est très dur." },
+  { emoji: "🎯", label: "Objectifs sportifs", amorce: "J'ai des objectifs sportifs que j'aimerais atteindre." },
+  { emoji: "🧑‍🤝‍🧑", label: "Relation parent / ado", amorce: "La relation avec mon ado ou mon parent est compliquée." },
+  { emoji: "🌫️", label: "Je me sens perdu·e", amorce: "Je me sens vraiment perdu·e en ce moment." },
+  { emoji: "🪫", label: "Épuisé·e, vidé·e", amorce: "Je suis épuisé·e, je n'ai plus d'énergie pour rien." },
+  { emoji: "🔁", label: "Je tourne en rond", amorce: "J'ai l'impression de subir ma vie et de tourner en rond." },
+  { emoji: "🔗", label: "Addictions", amorce: "Je lutte avec une addiction et j'aimerais m'en libérer." },
+  { emoji: "😰", label: "Crises d'angoisse", amorce: "Je souffre de crises d'angoisse et j'aimerais comprendre." },
+];
+
+const css = `
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:0.9}50%{transform:scale(1.08);opacity:1}}
+  @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes tdot{0%,60%,100%{opacity:.2;transform:scale(1)}30%{opacity:1;transform:scale(1.35)}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  .grain{position:absolute;inset:0;opacity:0.025;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .ring{width:96px;height:96px;border-radius:50%;border:1px solid rgba(28,28,26,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:38px;position:relative;animation:pulse 5s ease-in-out infinite}
+  .ring::before{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(28,28,26,0.06)}
+  .splash{min-height:100vh;background:#FAF8F5;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 26px;text-align:center;position:relative;overflow:hidden}
+  .splash-h{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(38px,9vw,58px);line-height:1.05;margin-bottom:28px;position:relative;z-index:1;letter-spacing:-1px;color:#1C1C1A}
+  .splash-h em{font-style:italic;font-weight:400}
+  .splash-cite{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:16px;color:#4A4844;line-height:1.8;max-width:360px;margin-bottom:8px;position:relative;z-index:1}
+  .splash-auteur{font-size:12px;color:#8A8680;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:32px;position:relative;z-index:1}
+  .splash-sub{font-size:14px;color:#5A5650;line-height:1.85;max-width:320px;margin-bottom:44px;font-weight:300;position:relative;z-index:1}
+  .start-btn{background:#1C1C1A;color:#FAF8F5;border:none;border-radius:40px;padding:17px 52px;font-size:14px;font-weight:500;letter-spacing:0.3px;cursor:pointer;transition:all 0.3s;position:relative;z-index:1}
+  .start-btn:active{transform:scale(0.98)}
+  .splash-note{font-size:11px;color:#A0A09A;margin-top:16px;letter-spacing:1px;text-transform:uppercase;position:relative;z-index:1}
+  .chat-wrap{display:flex;flex-direction:column;height:100vh;background:#0a0a0a;max-width:580px;margin:0 auto}
+  .top{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid rgba(244,244,242,0.08);background:rgba(10,10,10,0.92);backdrop-filter:blur(14px)}
+  .top-left{display:flex;align-items:center;gap:9px}
+  .top-dot{width:6px;height:6px;border-radius:50%;background:#f4f4f2}
+  .top-name{font-family:'Fraunces',serif;font-size:15px;font-weight:400;color:#f4f4f2}
+  .top-back{background:none;border:1px solid rgba(244,244,242,0.18);border-radius:2px;color:rgba(244,244,242,0.6);font-size:11px;letter-spacing:0.5px;text-transform:uppercase;padding:7px 13px;cursor:pointer;font-weight:500}
+  .msgs{flex:1;overflow-y:auto;padding:26px 18px}
+  .row-ai{display:flex;gap:11px;margin-bottom:20px;align-items:flex-end;animation:rise 0.5s cubic-bezier(.16,1,.3,1) both}
+  .row-user{display:flex;justify-content:flex-end;margin-bottom:20px;animation:rise 0.4s cubic-bezier(.16,1,.3,1) both}
+  .av{width:30px;height:30px;border-radius:50%;border:1px solid rgba(244,244,242,0.3);display:flex;align-items:center;justify-content:center;font-size:12px;color:#f4f4f2;font-family:'Fraunces',serif;flex-shrink:0;background:#0a0a0a}
+  .bub-ai{background:#161614;border:1px solid rgba(244,244,242,0.06);border-radius:2px 14px 14px 14px;padding:15px 19px;max-width:82%;font-size:15.5px;line-height:1.72;white-space:pre-line;color:#eceae6}
+  .bub-user{background:#f4f4f2;border-radius:14px 14px 2px 14px;padding:15px 19px;max-width:82%;font-size:15.5px;line-height:1.72;color:#0a0a0a;white-space:pre-line;font-weight:400}
+  .izone{padding:13px 16px 26px;background:rgba(10,10,10,0.95);backdrop-filter:blur(14px);border-top:1px solid rgba(244,244,242,0.08)}
+  .irow{display:flex;gap:9px;align-items:flex-end}
+  .ta{flex:1;background:#161614;border:1px solid rgba(244,244,242,0.12);border-radius:14px;padding:13px 18px;font-size:15.5px;color:#f4f4f2;resize:none;line-height:1.55;max-height:120px}
+  .ta::placeholder{color:rgba(244,244,242,0.3)}
+  .send{width:46px;height:46px;border-radius:50%;background:#f4f4f2;border:none;color:#0a0a0a;font-size:19px;cursor:pointer;flex-shrink:0}
+  .typing{display:flex;gap:6px;padding:6px 4px}
+  .td{width:7px;height:7px;border-radius:50%;background:rgba(244,244,242,0.6);animation:tdot 1.3s ease-in-out infinite}
+  .probs{padding-left:41px;margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .prob{background:#161614;border:1px solid rgba(244,244,242,0.1);border-radius:12px;padding:13px 14px;font-size:13.5px;color:rgba(244,244,242,0.72);cursor:pointer;text-align:left;display:flex;align-items:center;gap:9px;line-height:1.3;transition:all 0.22s}
+  .prob:hover{background:#1e1e1a;border-color:rgba(244,244,242,0.28);color:#f4f4f2}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);display:flex;align-items:flex-end;justify-content:center;z-index:200;animation:fadeIn 0.4s both}
+  .sheet{background:#0f0f0e;border:1px solid rgba(244,244,242,0.1);border-bottom:none;border-radius:20px 20px 0 0;padding:30px 24px 36px;width:100%;max-width:580px;animation:slideUp 0.5s cubic-bezier(.16,1,.3,1) both;max-height:92vh;overflow-y:auto}
+  .handle{width:40px;height:3px;border-radius:3px;background:rgba(244,244,242,0.2);margin:0 auto 24px}
+  .ez-av{width:62px;height:62px;border-radius:50%;border:1px solid rgba(244,244,242,0.3);display:flex;align-items:center;justify-content:center;font-size:24px;color:#f4f4f2;font-family:'Fraunces',serif;margin:0 auto 18px;background:#0a0a0a}
+  .sh{font-family:'Fraunces',serif;font-weight:300;font-size:25px;text-align:center;line-height:1.25;margin-bottom:12px;letter-spacing:-0.3px;color:#f4f4f2}
+  .sh em{font-style:italic;font-weight:400}
+  .ss{font-size:14px;color:rgba(244,244,242,0.55);text-align:center;line-height:1.75;margin-bottom:24px;font-weight:300}
+  .qt{border-left:2px solid rgba(244,244,242,0.25);padding:6px 0 6px 16px;margin-bottom:24px}
+  .qt p{font-size:14px;font-style:italic;color:rgba(244,244,242,0.6);line-height:1.75;font-family:'Fraunces',serif;font-weight:300}
+  .qt span{font-size:12px;color:rgba(244,244,242,0.35);margin-top:8px;display:block;font-style:normal}
+  .cbtn{width:100%;background:#f4f4f2;color:#0a0a0a;border:none;border-radius:2px;padding:16px;font-size:13px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;margin-top:16px}
+  .gbtn{width:100%;background:transparent;border:none;color:rgba(244,244,242,0.4);font-size:13px;cursor:pointer;margin-top:14px;padding:8px}
+  .check{width:58px;height:58px;border-radius:50%;border:1px solid rgba(244,244,242,0.3);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px}
+  .rm{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:300;padding:30px;animation:fadeIn 0.3s both}
+  .rb{background:#0f0f0e;border:1px solid rgba(244,244,242,0.12);border-radius:14px;padding:28px 24px;max-width:340px;text-align:center}
+  .rh{font-family:'Fraunces',serif;font-size:19px;margin-bottom:10px;font-weight:400;color:#f4f4f2}
+  .rp{font-size:14px;color:rgba(244,244,242,0.5);line-height:1.6;margin-bottom:22px;font-weight:300}
+  .rrow{display:flex;gap:10px}
+  .ryes{flex:1;background:#f4f4f2;color:#0a0a0a;border:none;border-radius:2px;padding:13px;font-size:13px;font-weight:600;cursor:pointer}
+  .rno{flex:1;background:transparent;border:1px solid rgba(244,244,242,0.2);color:rgba(244,244,242,0.6);border-radius:2px;padding:13px;font-size:13px;cursor:pointer}
+  .ez-page{position:fixed;inset:0;background:#FAF8F5;z-index:400;overflow-y:auto;animation:fadeIn 0.3s both}
+  .ez-inner{max-width:520px;margin:0 auto;padding:48px 28px 80px}
+  .ez-back{background:none;border:none;font-size:12px;color:#A0A09A;letter-spacing:1px;text-transform:uppercase;cursor:pointer;margin-bottom:48px;display:flex;align-items:center;gap:8px}
+  .ez-photo{width:130px;height:130px;border-radius:50%;overflow:hidden;margin:0 auto 28px;border:1px solid rgba(28,28,26,0.1)}
+  .ez-photo img{width:100%;height:100%;object-fit:cover;object-position:center 20%}
+  .ez-name{font-family:'Fraunces',serif;font-weight:300;font-size:34px;text-align:center;color:#1C1C1A;letter-spacing:-0.5px;margin-bottom:6px}
+  .ez-titre{font-size:12px;color:#A0A09A;text-align:center;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:40px}
+  .ez-div{width:32px;height:1px;background:rgba(28,28,26,0.15);margin:0 auto 40px}
+  .ez-bio{font-size:16px;line-height:1.9;color:#3A3835;font-weight:300;text-align:center;margin-bottom:48px}
+  .ez-bio em{font-family:'Fraunces',serif;font-style:italic;color:#1C1C1A}
+  .ez-form{background:#F2F0ED;border-radius:12px;padding:24px;margin-bottom:40px}
+  .ez-form-title{font-size:11px;color:#A0A09A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px}
+  .ez-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+  .ez-dot{width:4px;height:4px;border-radius:50%;background:#1C1C1A;margin-top:8px;flex-shrink:0}
+  .ez-item-text{font-size:14px;color:#3A3835;line-height:1.6;font-weight:300}
+  .ez-cta{text-align:center}
+  .ez-cta-note{font-size:14px;color:#8A8680;margin-bottom:18px;font-weight:300}
+  .ez-cta-btn{display:inline-block;background:#1C1C1A;color:#FAF8F5;border-radius:40px;padding:15px 44px;font-size:13px;font-weight:500;text-decoration:none;letter-spacing:0.3px}
+  .ez-cite{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:14px;color:#B0ACA8;text-align:center;margin-top:48px;line-height:1.8}
+  .ez-cite small{font-size:11px;font-style:normal;letter-spacing:1px;text-transform:uppercase;color:#C8C4C0;display:block;margin-top:6px}
+`;
+
+function EzeckielPage({ onClose }) {
+  return (
+    <div className="ez-page">
+      <div className="ez-inner">
+        <button className="ez-back" onClick={onClose}>&#8592; Retour</button>
+        <div className="ez-photo"><img src="/IMG_20260613_223107.jpg" alt="Ezeckiel"/></div>
+        <h1 className="ez-name">Ezeckiel</h1>
+        <p className="ez-titre">Praticien holistique</p>
+        <div className="ez-div"></div>
+        <p className="ez-bio">
+          Ezeckiel est un therapeute qui accompagne les personnes sur des moments de vie difficiles, comme ce que tu traverses actuellement.<br/><br/>
+          Son approche est basée sur la présence, le corps, ainsi qu&rsquo;un fond de medecine traditionnelle chinoise.<br/><br/>
+          Pas de recette, pas de programme &mdash; juste un coup de fil gratuit qui n&rsquo;engage a rien, et une seance de travail si tu en as envie.
+        </p>
+        <div className="ez-form">
+          <p className="ez-form-title">Formation</p>
+          <div className="ez-item"><div className="ez-dot"></div><p className="ez-item-text">Master Praticien en Holisyntonie &mdash; 3 ans (Unisun Academy)</p></div>
+          <div className="ez-item"><div className="ez-dot"></div><p className="ez-item-text">Approche corps-presence centree sur le senti direct</p></div>
+          <div className="ez-item"><div className="ez-dot"></div><p className="ez-item-text">Accompagnement individuel &mdash; tous profils, tous aspects de la vie</p></div>
+        </div>
+        <div className="ez-cta">
+          <p className="ez-cta-note">Un premier echange, gratuit, sans engagement.</p>
+          <a href="https://calendly.com/zekzekou/30min" target="_blank" className="ez-cta-btn">Reserver un appel decouverte</a>
+          <p className="ez-cta-note" style={{marginTop:20}}>Seances de coaching — visio ou presentiel.</p>
+          <a href="https://calendly.com/zekzekou/rdv-seance" target="_blank" className="ez-cta-btn" style={{background:"transparent",border:"1px solid #1C1C1A",color:"#1C1C1A",marginTop:8,display:"inline-block"}}>Reserver une seance</a>
+        </div>
+        <p className="ez-cite">&laquo;&nbsp;Aucun enseignement théorique sur l&rsquo;eau de source n&rsquo;a désaltéré un assoiffé.&nbsp;&raquo;<small>Luis Ansa</small></p>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [started, setStarted] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [typing, setTyping] = useState(false);
+  const [showAppel, setShowAppel] = useState(false);
+  const [appelStep, setAppelStep] = useState("invite");
+  const [confirmReset, setConfirmReset] = useState(false);
+  const [showEzeckiel, setShowEzeckiel] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
+  const msgRef = useRef(null);
+
+  useEffect(() => { msgRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, typing, showAppel]);
+
+  function now() { return new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }); }
+
+  async function sendMsg(txt) {
+    const content = txt || input;
+    if (!content?.trim()) return;
+    const um = { role: "user", content, time: now() };
+    const hist = [...messages, um];
+    setMessages(hist); setInput(""); setTyping(true);
+    let rep = await callIA(hist);
+    setTyping(false);
+    if (rep.includes("[PROPOSER_APPEL]")) {
+      rep = rep.replace("[PROPOSER_APPEL]", "").trim();
+      setMessages(p => [...p, { role: "assistant", content: rep, time: now() }]);
+      setTimeout(() => setShowAppel(true), 800);
+    } else {
+      setMessages(p => [...p, { role: "assistant", content: rep, time: now() }]);
+    }
+  }
+
+  async function sendRecap(email) {
+    const resume = messages.map(m => (m.role === "assistant" ? "Re-n'être : " : "Vous : ") + m.content).join("\n\n");
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("_replyto", email);
+    formData.append("_subject", "Votre resume Re-n'être");
+    formData.append("message", resume);
+    try {
+      await fetch("https://formspree.io/f/mojzpoja", { method: "POST", body: formData, headers: { "Accept": "application/json" } });
+    } catch(e) {}
+    setEmailSent(true);
+  }
+
+  function start() {
+    setStarted(true);
+    setTimeout(() => {
+      setMessages([{ role: "assistant", content: "Ce que tu partages ici reste entre nous. Je ne garde rien, je ne juge rien. Tu peux aller a ton rythme.\n\nQu'est-ce qui t'amene aujourd'hui ?", time: "" }]);
+    }, 500);
+  }
+
+  function resetAll() {
+    setStarted(false); setMessages([]); setInput(""); setTyping(false);
+    setShowAppel(false); setAppelStep("invite"); setConfirmReset(false);
+    setShowEzeckiel(false); setShowEmail(false); setEmailSent(false);
+  }
+
+  if (!started) return (
+    <div style={{background:"#FAF8F5",minHeight:"100vh"}}>
+      <style>{css}</style>
+      <div className="splash">
+        <div className="grain"/>
+        <div className="ring"><div style={{width:10,height:10,borderRadius:"50%",background:"#1C1C1A"}}/></div>
+        <h1 className="splash-h">Re-n&rsquo;<em>être</em></h1>
+        <p className="splash-cite">&laquo;&nbsp;Aucun enseignement théorique sur l&rsquo;eau de source n&rsquo;a désaltéré un assoiffé.&nbsp;&raquo;</p>
+        <p className="splash-auteur">Luis Ansa</p>
+        <p className="splash-sub">Une présence humaine, augmentée par l&rsquo;intelligence artificielle. Pour que la vraie rencontre commence là où l&rsquo;écran s&rsquo;arrête.</p>
+        <button className="start-btn" onClick={start}>Commencer</button>
+        <p className="splash-note">Gratuit &middot; Confidentiel &middot; Sans inscription</p>
+        <button onClick={() => setShowEzeckiel(true)} style={{background:"none",border:"none",color:"rgba(28,28,26,0.35)",fontSize:11,letterSpacing:"1px",textTransform:"uppercase",cursor:"pointer",marginTop:20,position:"relative",zIndex:1}}>Qui est Ezeckiel ?</button>
+      </div>
+      {showEzeckiel && <EzeckielPage onClose={() => setShowEzeckiel(false)} />}
+    </div>
+  );
+
+  return (
+    <div style={{background:"#0a0a0a",minHeight:"100vh"}}>
+      <style>{css}</style>
+      <div className="chat-wrap">
+        <div className="top">
+          <div className="top-left">
+            <div className="top-dot"/>
+            <span className="top-name">Re-n&rsquo;être</span>
+          </div>
+          <div style={{display:"flex",gap:8}}>
+            <button className="top-back" onClick={() => setShowEzeckiel(true)}>E</button>
+            <button className="top-back" onClick={() => setConfirmReset(true)}>&#8635; Recommencer</button>
+          </div>
+        </div>
+        <div className="msgs">
+          {messages.map((m, i) => (
+            m.role === "assistant" ? (
+              <div key={i} className="row-ai">
+                <div className="av">E</div>
+                <div className="bub-ai">{m.content}</div>
+              </div>
+            ) : (
+              <div key={i} className="row-user">
+                <div className="bub-user">{m.content}</div>
+              </div>
+            )
+          ))}
+          {typing && (
+            <div className="row-ai">
+              <div className="av">E</div>
+              <div className="bub-ai">
+                <div className="typing">
+                  {[0,1,2].map(i => <div key={i} className="td" style={{animationDelay:`${i*0.2}s`}}/>)}
+                </div>
+              </div>
+            </div>
+          )}
+          {messages.length === 1 && !typing && (
+            <div className="probs">
+              {PROBLEMATIQUES.map((p, i) => (
+                <button key={i} className="prob" onClick={() => sendMsg(p.amorce)}>
+                  <span style={{fontSize:17,flexShrink:0}}>{p.emoji}</span>
+                  <span>{p.label}</span>
+                </button>
+              ))}
+            </div>
+          )}
+          <div ref={msgRef}/>
+        </div>
+        <div className="izone">
+          <div className="irow">
+            <textarea
+              className="ta"
+              rows={1}
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(input); } }}
+              placeholder="Ecris ce qui est la, maintenant..."
+            />
+            <button className="send" onClick={() => sendMsg(input)}>&#8594;</button>
+          </div>
+          {messages.length > 2 && !showEmail && (
+            <div style={{textAlign:"center",marginTop:10}}>
+              <button onClick={() => setShowEmail(true)} style={{background:"none",border:"none",color:"rgba(244,244,242,0.3)",fontSize:12,cursor:"pointer",letterSpacing:"0.5px"}}>
+                Recevoir un resume par email
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {showAppel && (
+        <div className="overlay" onClick={e => { if (e.target.className === "overlay" && appelStep !== "confirmed") setShowAppel(false); }}>
+          <div className="sheet">
+            <div className="handle"/>
+            {appelStep === "invite" && (
+              <>
+                <div className="ez-av">E</div>
+                <h2 className="sh">Faire ce pas maintenant,<br/><em>c&rsquo;est ton premier geste pour toi.</em></h2>
+                <p className="ss">Pas un service qu&rsquo;on achète. Le premier &laquo;&nbsp;je compte&nbsp;&raquo;. Une vraie présence humaine t&rsquo;accueille là où l&rsquo;écran s&rsquo;arrête. Un appel de 15 minutes, gratuit, sans rien devoir apres.</p>
+                <div className="qt">
+                  <p>&laquo;&nbsp;Je ne te dis pas quoi faire. Je t&rsquo;aide a entendre ce que tu sais deja &mdash; mais que le bruit a couvert.&nbsp;&raquo;</p>
+                  <span>Ezeckiel &middot; thérapeute holistique</span>
+                </div>
+                <button className="cbtn" onClick={() => setAppelStep("calendar")}>Choisir un creneau</button>
+                <button className="gbtn" onClick={() => setShowEzeckiel(true)} style={{fontSize:11,letterSpacing:"0.5px",textTransform:"uppercase"}}>Qui est Ezeckiel ?</button>
+                <button className="gbtn" onClick={() => setShowAppel(false)}>Pas tout de suite &mdash; continuer a ecrire</button>
+              </>
+            )}
+            {appelStep === "calendar" && (
+              <>
+                <h2 className="sh">Choisis ton creneau<br/><em>directement dans mon agenda.</em></h2>
+                <p className="ss">15 minutes, par telephone ou visio. Pendant que l&rsquo;elan est vivant.</p>
+                <div style={{background:"#161614",border:"1px solid rgba(244,244,242,0.1)",borderRadius:12,padding:18,marginBottom:12}}>
+                  <label style={{display:"flex",alignItems:"flex-start",gap:12,cursor:"pointer",marginBottom:16}}>
+                    <input type="checkbox" id="majorite" style={{marginTop:3,width:16,height:16,flexShrink:0,cursor:"pointer"}}/>
+                    <span style={{fontSize:13,color:"rgba(244,244,242,0.55)",lineHeight:1.6}}>Je confirme avoir 18 ans ou plus, ou disposer de l&rsquo;accord de mes parents ou tuteurs legaux.</span>
+                  </label>
+                  <button className="cbtn" style={{marginTop:0}} onClick={() => {
+                    const cb = document.getElementById("majorite");
+                    if (!cb || !cb.checked) { alert("Merci de confirmer ta majorite ou l'accord parental avant de reserver."); return; }
+                    window.open("https://calendly.com/zekzekou/30min", "_blank");
+                    setTimeout(() => setAppelStep("confirmed"), 1500);
+                  }}>Voir les creneaux disponibles &#8594;</button>
+                </div>
+                <button className="gbtn" onClick={() => setAppelStep("invite")}>&#8592; Retour</button>
+              </>
+            )}
+            {appelStep === "confirmed" && (
+              <>
+                <div className="check">&#10003;</div>
+                <h2 className="sh">C&rsquo;est note.<br/><em>Ton premier pas.</em></h2>
+                <p className="ss">Tu recevras une confirmation. D&rsquo;ici la, tu peux continuer a ecrire ici.</p>
+                <div className="qt"><p>Tu viens de faire quelque chose que beaucoup repoussent : agir au moment ou l&rsquo;envie est la. C&rsquo;est exactement ca, ne plus subir.</p></div>
+                <button className="cbtn" onClick={() => setShowAppel(false)}>Revenir a la conversation</button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {showEzeckiel && <EzeckielPage onClose={() => setShowEzeckiel(false)} />}
+
+      {showEmail && (
+        <div className="rm">
+          <div className="rb">
+            {!emailSent ? (
+              <>
+                <h3 className="rh">Recevoir un resume</h3>
+                <p className="rp">Je t&rsquo;envoie un resume de notre echange avec quelques pistes pour avancer.</p>
+                <input type="email" placeholder="ton@email.com" value={emailInput} onChange={e => setEmailInput(e.target.value)}
+                  style={{width:"100%",background:"#161614",border:"1px solid rgba(244,244,242,0.15)",borderRadius:8,padding:"12px 14px",color:"#f4f4f2",fontSize:14,marginBottom:14,fontFamily:"Inter,sans-serif"}}/>
+                <div className="rrow">
+                  <button className="rno" onClick={() => setShowEmail(false)}>Annuler</button>
+                  <button className="ryes" onClick={() => sendRecap(emailInput)}>Envoyer</button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="check">&#10003;</div>
+                <h3 className="rh">C&rsquo;est envoye.</h3>
+                <p className="rp">Prends soin de toi.</p>
+                <button className="ryes" style={{width:"100%",marginTop:8}} onClick={() => { setShowEmail(false); setEmailSent(false); }}>Fermer</button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {confirmReset && (
+        <div className="rm">
+          <div className="rb">
+            <h3 className="rh">Recommencer ?</h3>
+            <p className="rp">Tu reviendras a l&rsquo;accueil. La conversation sera effacee.</p>
+            <div className="rrow">
+              <button className="rno" onClick={() => setConfirmReset(false)}>Annuler</button>
+              <button className="ryes" onClick={resetAll}>Recommencer</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
